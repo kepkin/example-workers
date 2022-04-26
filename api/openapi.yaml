@@ -1,0 +1,74 @@
+openapi: 3.0.3
+info:
+  title: "Price Monitor Service"
+  version: v1
+
+paths:
+  /v1/monitor/:monitorId:
+    post:
+      operationId: StartMonitor
+      summary: Add monitor task
+
+      parameters:
+        - name: monitorId
+          in: path
+          required: true
+          schema:
+            type: string
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MonitorTask'
+
+      responses:
+        '200':
+          description: OK
+
+    get: 
+      operationId: GetMonitor
+      summary: Get monitor results
+
+      parameters:
+        - name: monitorId
+          in: path
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonitorResults'
+          
+          
+components:
+  schemas:
+    MonitorTask:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+
+        stop:
+          type: string
+          format: date-time
+
+        target:
+          type: string
+
+        frequency:
+          type: string
+          description: duration in format '1s', '5m'
+
+    MonitorResults:
+      type: array
+      items:
+        type: object
+
